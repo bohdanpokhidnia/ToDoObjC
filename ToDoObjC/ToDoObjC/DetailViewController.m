@@ -24,6 +24,7 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.saveButton.userInteractionEnabled = NO;
     [self.saveButton addTarget:self action:@selector(saveButtonAction) forControlEvents:UIControlEventTouchUpInside];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleEndEditing)];
@@ -37,15 +38,59 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField {
     if ([textField isEqual:self.textField]) {
-        [self.textField resignFirstResponder];
+        if ([self.textField.text length] != 0) {
+            [self.textField resignFirstResponder];
+            self.saveButton.userInteractionEnabled = YES;
+            return YES;
+        } else {
+            [self showAlertWithMessage: @"For save task, enter value to text field"];
+        }
     }
     
-    return YES;
+    return NO;
 }
 
 // MARK: - User interactions
 
 - (void) saveButtonAction {
+    if (self.eventDate) {
+        switch ([self.eventDate compare:[NSDate date]]) {
+            case NSOrderedSame:
+                [self showAlertWithMessage:@"For save task, changed date in picker"];
+                break;
+            
+            case NSOrderedAscending:
+                [self showAlertWithMessage:@"For save task, changed date in picker"];
+                break;
+                
+            case NSOrderedDescending:
+                [self setNotification];
+                [self.navigationController popViewControllerAnimated:YES];
+                NSLog(@"set notification success");
+                break;
+        }
+    } else {
+        [self showAlertWithMessage:@"For save task, changed date in picker"];
+    }
+}
+
+- (void) handleEndEditing {
+    if ([self.textField.text length] != 0) {
+        [self.view endEditing:YES];
+        self.saveButton.userInteractionEnabled = YES;
+    } else {
+        [self showAlertWithMessage: @"For save task, enter value to text field"];
+    }
+}
+
+- (void) datePickerValueChanged {
+    self.eventDate = self.datePicker.date;
+    NSLog(@"self.eventDate = %@", self.eventDate);
+}
+
+// MARK: - Private
+
+- (void) setNotification {
     NSString *textFieldString = self.textField.text;
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -65,19 +110,18 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
     notification.alertBody = textFieldString;
     notification.applicationIconBadgeNumber = 1;
     notification.soundName = UILocalNotificationDefaultSoundName;
-    
+
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-    
-    NSLog(@"Save button");
 }
 
-- (void) handleEndEditing {
-    [self.view endEditing:YES];
-}
+- (void) showAlertWithMessage : (NSString *) message {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Attention!" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *dissmissAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler: ^(UIAlertAction *_Nonnull action) {
+        NSLog(@"Dissmiss alert");
+    }];
 
-- (void) datePickerValueChanged {
-    self.eventDate = self.datePicker.date;
-    NSLog(@"self.eventDate = %@", self.eventDate);
+    [alertController addAction:dissmissAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

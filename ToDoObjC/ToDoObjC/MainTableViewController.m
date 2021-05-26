@@ -6,6 +6,7 @@
 //
 
 #import "MainTableViewController.h"
+#import "DetailViewController.h"
 
 @interface MainTableViewController ()
 
@@ -43,6 +44,15 @@
     cell.textLabel.text = [dict objectForKey:@"textFieldString"];
     cell.detailTextLabel.text = [dict objectForKey:@"dateString"];
     return cell;
+}
+
+// MARK: - Delegate
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    DetailViewController *detailViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
+    [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
 @end

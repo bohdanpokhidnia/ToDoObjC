@@ -38,7 +38,7 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *identifier = @"Cell";
-    NSNotification *notification = [self.arrayEvents objectAtIndex:indexPath.row];
+    UILocalNotification *notification = [self.arrayEvents objectAtIndex:indexPath.row];
     NSDictionary *dict = notification.userInfo;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     cell.textLabel.text = [dict objectForKey:@"textFieldString"];
@@ -49,9 +49,15 @@
 // MARK: - Delegate
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UILocalNotification *notification = [self.arrayEvents objectAtIndex:indexPath.row];
+    NSDictionary *dict = notification.userInfo;
     
     DetailViewController *detailViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
+    detailViewController.eventInfo = [dict objectForKey:@"textFieldString"];
+    detailViewController.eventDate = notification.fireDate;
+    detailViewController.isDetail = YES;
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 

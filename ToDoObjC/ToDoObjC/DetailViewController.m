@@ -24,14 +24,19 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.saveButton.userInteractionEnabled = NO;
-    [self.saveButton addTarget:self action:@selector(saveButtonAction) forControlEvents:UIControlEventTouchUpInside];
-    
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleEndEditing)];
-    [self.view addGestureRecognizer:tapGesture];
-    
     self.datePicker.minimumDate = [NSDate date];
-    [self.datePicker addTarget:self action:@selector(datePickerValueChanged) forControlEvents:UIControlEventValueChanged];
+    
+    if (self.isDetail) {
+        self.textField.text = self.eventInfo;
+        self.datePicker.date = self.eventDate;
+    } else {
+        self.saveButton.userInteractionEnabled = NO;
+        [self.saveButton addTarget:self action:@selector(saveButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleEndEditing)];
+        [self.view addGestureRecognizer:tapGesture];
+        [self.datePicker addTarget:self action:@selector(datePickerValueChanged) forControlEvents:UIControlEventValueChanged];
+    }
 }
 
 // MARK: - textFieldShouldReturn

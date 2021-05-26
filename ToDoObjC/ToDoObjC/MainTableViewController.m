@@ -24,9 +24,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    self.arrayEvents = [[NSMutableArray alloc] initWithObjects:@"AAA", @"BBB", @"CCC", nil];
-    
+
+    NSArray *notificationArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    self.arrayEvents = [[NSMutableArray alloc] initWithArray:notificationArray];
 }
 
 // MARK: - DataSource
@@ -37,9 +37,11 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *identifier = @"Cell";
-    NSString *value = [self.arrayEvents objectAtIndex:indexPath.row];
+    NSNotification *notification = [self.arrayEvents objectAtIndex:indexPath.row];
+    NSDictionary *dict = notification.userInfo;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-    cell.textLabel.text = value;
+    cell.textLabel.text = [dict objectForKey:@"textFieldString"];
+    cell.detailTextLabel.text = [dict objectForKey:@"dateString"];
     return cell;
 }
 

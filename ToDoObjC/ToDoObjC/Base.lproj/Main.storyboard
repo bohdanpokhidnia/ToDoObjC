@@ -100,7 +100,6 @@
                             <constraint firstItem="gr2-2J-a5m" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-16" id="non-zj-Lb4"/>
                             <constraint firstItem="R9M-6w-8tt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rzI-Kl-L4D"/>
                             <constraint firstItem="R9M-6w-8tt" firstAttribute="top" secondItem="eyK-pj-17u" secondAttribute="bottom" constant="16" id="vC5-bx-jwJ"/>
-                            <constraint firstItem="gr2-2J-a5m" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="vYJ-rn-cbR"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Add task" id="oT9-LC-LHD"/>

@@ -7,6 +7,8 @@
 
 #import "DetailViewController.h"
 
+UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
+
 @interface DetailViewController ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *textField;
@@ -44,6 +46,28 @@
 // MARK: - User interactions
 
 - (void) saveButtonAction {
+    NSString *textFieldString = self.textField.text;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"HH:mm DD.MMMM.yyyy";
+    
+    NSString *dateString = [dateFormatter stringFromDate:self.eventDate];
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          textFieldString, @"textFieldString",
+                          dateString, @"dateString",
+                          nil];
+    
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.userInfo = dict;
+    notification.timeZone = [NSTimeZone defaultTimeZone];
+    notification.fireDate = self.eventDate;
+    notification.alertBody = textFieldString;
+    notification.applicationIconBadgeNumber = 1;
+    notification.soundName = UILocalNotificationDefaultSoundName;
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    
     NSLog(@"Save button");
 }
 

@@ -26,6 +26,9 @@
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleEndEditing)];
     [self.view addGestureRecognizer:tapGesture];
+    
+    self.datePicker.minimumDate = [NSDate date];
+    [self.datePicker addTarget:self action:@selector(datePickerValueChanged) forControlEvents:UIControlEventValueChanged];
 }
 
 // MARK: - textFieldShouldReturn
@@ -46,6 +49,11 @@
 
 - (void) handleEndEditing {
     [self.view endEditing:YES];
+}
+
+- (void) datePickerValueChanged {
+    self.eventDate = self.datePicker.date;
+    NSLog(@"self.eventDate = %@", self.eventDate);
 }
 
 @end

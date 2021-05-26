@@ -28,7 +28,12 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
     
     if (self.isDetail) {
         self.textField.text = self.eventInfo;
-        self.datePicker.date = self.eventDate;
+        self.textField.userInteractionEnabled = NO;
+        
+        [self performSelector:@selector(setDatePickerValueWithAnimated) withObject:nil afterDelay:0.5];
+        self.datePicker.userInteractionEnabled = NO;
+        
+        self.saveButton.hidden = YES;
     } else {
         self.saveButton.userInteractionEnabled = NO;
         [self.saveButton addTarget:self action:@selector(saveButtonAction) forControlEvents:UIControlEventTouchUpInside];
@@ -127,6 +132,10 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 
     [alertController addAction:dissmissAction];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void) setDatePickerValueWithAnimated {
+    [self.datePicker setDate:self.eventDate animated:YES];
 }
 
 @end

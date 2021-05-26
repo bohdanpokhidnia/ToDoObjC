@@ -28,6 +28,8 @@
 
     NSArray *notificationArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
     self.arrayEvents = [[NSMutableArray alloc] initWithArray:notificationArray];
+    
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 // MARK: - DataSource

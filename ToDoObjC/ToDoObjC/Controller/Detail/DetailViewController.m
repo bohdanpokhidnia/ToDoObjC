@@ -5,6 +5,7 @@
 //  Created by Bogdan Pohidnya on 26.05.2021.
 //
 
+#import <UserNotifications/UserNotifications.h>
 #import "DetailViewController.h"
 
 UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
@@ -34,6 +35,8 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
         self.datePicker.userInteractionEnabled = NO;
         
         self.saveButton.hidden = YES;
+        
+        [self.navigationItem setTitle:@"Detail task"];
     } else {
         self.saveButton.userInteractionEnabled = NO;
         [self.saveButton addTarget:self action:@selector(saveButtonAction) forControlEvents:UIControlEventTouchUpInside];
@@ -76,7 +79,6 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
             case NSOrderedDescending:
                 [self setNotification];
                 [self.navigationController popViewControllerAnimated:YES];
-                NSLog(@"set notification success");
                 break;
         }
     } else {
@@ -95,7 +97,6 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 
 - (void) datePickerValueChanged {
     self.eventDate = self.datePicker.date;
-    NSLog(@"self.eventDate = %@", self.eventDate);
 }
 
 // MARK: - Private
@@ -104,7 +105,7 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
     NSString *textFieldString = self.textField.text;
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"HH:mm DD.MMMM.yyyy";
+    dateFormatter.dateFormat = @"HH:mm dd.MMMM.yyyy";
     
     NSString *dateString = [dateFormatter stringFromDate:self.eventDate];
     
@@ -113,15 +114,25 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
                           dateString, @"dateString",
                           nil];
     
-    UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.userInfo = dict;
-    notification.timeZone = [NSTimeZone defaultTimeZone];
-    notification.fireDate = self.eventDate;
-    notification.alertBody = textFieldString;
-    notification.applicationIconBadgeNumber = 1;
-    notification.soundName = UILocalNotificationDefaultSoundName;
+    UNMutableNotificationContent *notificationContent = [[UNMutableNotificationContent alloc] init];
+    notificationContent.userInfo = dict;
+    notificationContent.title = textFieldString;
+    notificationContent.body = dateString;
+    notificationContent.badge = @1;
+    notificationContent.sound = [UNNotificationSound defaultSound];
     
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    NSCalendarUnit calendarUnit = NSCalendarUnitYear + NSCalendarUnitMonth + NSCalendarUnitDay + NSCalendarUnitHour + NSCalendarUnitMinute;
+    NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:calendarUnit fromDate:self.eventDate];
+    [dateComponents setTimeZone:[NSTimeZone defaultTimeZone]];
+    UNCalendarNotificationTrigger *notificationTrigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:dateComponents repeats:NO];
+    
+    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+    UNNotificationRequest *notificationRequest = [UNNotificationRequest requestWithIdentifier:@"Notification" content:notificationContent trigger:notificationTrigger];
+    [notificationCenter addNotificationRequest:notificationRequest withCompletionHandler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            NSLog(@"error: %@", error);
+        }
+    }];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"NewEvent" object:nil];
 }
 

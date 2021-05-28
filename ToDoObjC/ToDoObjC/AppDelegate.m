@@ -6,6 +6,7 @@
 //
 
 #import "AppDelegate.h"
+#import <UserNotifications/UserNotifications.h>
 
 @interface AppDelegate ()
 
@@ -15,16 +16,15 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+    UNAuthorizationOptions notificationOptions = UNAuthorizationOptionAlert + UNAuthorizationOptionBadge + UNAuthorizationOptionSound;
     
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        UIUserNotificationType userNotifictionTypes = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
-        
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotifictionTypes categories:nil];
-        
-        [application registerUserNotificationSettings:settings];
-        [application registerForRemoteNotifications]; 
-    }
-    
+    [notificationCenter requestAuthorizationWithOptions:notificationOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        if(!granted) {
+            NSLog(@"Oops, dont have permission");
+        }
+    }];
+
     return YES;
 }
 

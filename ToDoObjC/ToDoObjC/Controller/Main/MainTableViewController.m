@@ -93,12 +93,14 @@
 - (void) reloadTableViewWithNewEvent {
     [self.arrayEvents removeAllObjects];
     
-    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
-    [notificationCenter getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> * _Nonnull requests) {
-        self.arrayEvents = [[NSMutableArray alloc] initWithArray:requests];
+    [UIView animateWithDuration:0 animations:^{
+        UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+        [notificationCenter getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> * _Nonnull requests) {
+            self.arrayEvents = [[NSMutableArray alloc] initWithArray:requests];
+        }];
+    } completion:^(BOOL finished) {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     }];
-    
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 @end

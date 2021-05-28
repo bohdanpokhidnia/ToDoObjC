@@ -49,6 +49,10 @@
 // MARK: - Delegate
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row >= [self.arrayEvents count]) {
+        return;
+    }
+ 
     UILocalNotification *notification = [self.arrayEvents objectAtIndex:indexPath.row];
     NSDictionary *dict = notification.userInfo;
     
@@ -59,11 +63,6 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.navigationController pushViewController:detailViewController animated:YES];
-}
-
-- (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    return YES;
 }
 
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

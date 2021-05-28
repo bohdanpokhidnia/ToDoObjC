@@ -5,12 +5,11 @@
 //  Created by Bogdan Pohidnya on 26.05.2021.
 //
 
+#import <UserNotifications/UserNotifications.h>
 #import "MainTableViewController.h"
 #import "DetailViewController.h"
 
-@interface MainTableViewController ()
-
-@property (nonatomic, strong) NSMutableArray *arrayEvents;
+@interface MainTableViewController ()<UNUserNotificationCenterDelegate>
 
 @end
 
@@ -21,8 +20,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSArray *notificationArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
-    self.arrayEvents = [[NSMutableArray alloc] initWithArray:notificationArray];
+    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+    [notificationCenter getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> * _Nonnull requests) {
+        self.arrayEvents = [[NSMutableArray alloc] initWithArray:requests];
+    }];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableViewWithNewEvent) name:@"NewEvent" object:nil];
 }
 
@@ -38,8 +39,10 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *identifier = @"Cell";
-    UILocalNotification *notification = [self.arrayEvents objectAtIndex:indexPath.row];
-    NSDictionary *dict = notification.userInfo;
+    
+    UNNotificationRequest *notificationRequst = [self.arrayEvents objectAtIndex: indexPath.row];
+    NSDictionary *dict = notificationRequst.content.userInfo;
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     cell.textLabel.text = [dict objectForKey:@"textFieldString"];
     cell.detailTextLabel.text = [dict objectForKey:@"dateString"];
@@ -49,27 +52,37 @@
 // MARK: - Delegate
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    UILocalNotification *notification = [self.arrayEvents objectAtIndex:indexPath.row];
-    NSDictionary *dict = notification.userInfo;
+    if (indexPath.row >= [self.arrayEvents count]) {
+        return;
+    }
+ 
+    UNNotificationRequest *notificationRequst = [self.arrayEvents objectAtIndex: indexPath.row];
+    NSDictionary *dict = notificationRequst.content.userInfo;
     
     DetailViewController *detailViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"HH:mm dd.MMMM.yyyy";
+    NSDate *date = [dateFormatter dateFromString:[dict objectForKey:@"dateString"]];
+
     detailViewController.eventInfo = [dict objectForKey:@"textFieldString"];
-    detailViewController.eventDate = notification.fireDate;
+    detailViewController.eventDate = date;
     detailViewController.isDetail = YES;
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
-- (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    return YES;
-}
-
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row >= [self.arrayEvents count]) {
+        return;
+    }
+    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        UILocalNotification *notification = [self.arrayEvents objectAtIndex:indexPath.row];
-        [[UIApplication sharedApplication] cancelLocalNotification:notification];
+        UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+        UNNotificationRequest *notificationRequest = [self.arrayEvents objectAtIndex:indexPath.row];
+        NSLog(@"%@", [notificationRequest identifier]);
+        [notificationCenter removeDeliveredNotificationsWithIdentifiers:@[[notificationRequest identifier]]];
         [self.arrayEvents removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -79,8 +92,12 @@
 
 - (void) reloadTableViewWithNewEvent {
     [self.arrayEvents removeAllObjects];
-    NSArray *notificationArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
-    self.arrayEvents = [[NSMutableArray alloc] initWithArray:notificationArray];
+    
+    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+    [notificationCenter getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> * _Nonnull requests) {
+        self.arrayEvents = [[NSMutableArray alloc] initWithArray:requests];
+    }];
+    
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 

@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MainTableViewController : UITableViewController
 
+@property (nonatomic, strong) NSMutableArray *arrayEvents;
+
 @end
 
 NS_ASSUME_NONNULL_END

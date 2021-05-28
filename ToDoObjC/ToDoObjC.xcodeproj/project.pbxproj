@@ -45,6 +45,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F7032AA02660E663005F213D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F7032AA32660E693005F213D /* Main */,
+				F7032AA22660E68A005F213D /* Detail */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		F7032AA12660E670005F213D /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				F75B0DF6265E87C1003C64E2 /* AppDelegate.h */,
+				F75B0DF7265E87C1003C64E2 /* AppDelegate.m */,
+				F75B0DF9265E87C1003C64E2 /* SceneDelegate.h */,
+				F75B0DFA265E87C1003C64E2 /* SceneDelegate.m */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		F7032AA22660E68A005F213D /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				F75B0DFC265E87C1003C64E2 /* DetailViewController.h */,
+				F75B0DFD265E87C1003C64E2 /* DetailViewController.m */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		F7032AA32660E693005F213D /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				F739C653265EB3E000709DB0 /* MainTableViewController.h */,
+				F739C654265EB3E000709DB0 /* MainTableViewController.m */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		F75B0DEA265E87C1003C64E2 = {
 			isa = PBXGroup;
 			children = (
@@ -64,19 +102,13 @@
 		F75B0DF5265E87C1003C64E2 /* ToDoObjC */ = {
 			isa = PBXGroup;
 			children = (
-				F75B0DF6265E87C1003C64E2 /* AppDelegate.h */,
-				F75B0DF7265E87C1003C64E2 /* AppDelegate.m */,
-				F75B0DF9265E87C1003C64E2 /* SceneDelegate.h */,
-				F75B0DFA265E87C1003C64E2 /* SceneDelegate.m */,
-				F75B0DFC265E87C1003C64E2 /* DetailViewController.h */,
-				F75B0DFD265E87C1003C64E2 /* DetailViewController.m */,
+				F7032AA12660E670005F213D /* Application */,
+				F7032AA02660E663005F213D /* Controller */,
 				F75B0DFF265E87C1003C64E2 /* Main.storyboard */,
-				F75B0E02265E87C2003C64E2 /* Assets.xcassets */,
 				F75B0E04265E87C2003C64E2 /* LaunchScreen.storyboard */,
+				F75B0E02265E87C2003C64E2 /* Assets.xcassets */,
 				F75B0E07265E87C2003C64E2 /* Info.plist */,
 				F75B0E08265E87C2003C64E2 /* main.m */,
-				F739C653265EB3E000709DB0 /* MainTableViewController.h */,
-				F739C654265EB3E000709DB0 /* MainTableViewController.m */,
 			);
 			path = ToDoObjC;
 			sourceTree = "<group>";

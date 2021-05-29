@@ -6,26 +6,26 @@
 //
 
 #import <UserNotifications/UserNotifications.h>
-#import "MainTableViewController.h"
+#import "MainViewController.h"
 #import "DetailViewController.h"
 
-@interface MainTableViewController ()<UNUserNotificationCenterDelegate>
+@interface MainViewController ()<UITableViewDataSource, UITableViewDelegate, UNUserNotificationCenterDelegate>
+
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIBarButtonItem *addTaskButton;
 
 @end
 
-@implementation MainTableViewController
+@implementation MainViewController
 
 // MARK: - Lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
-    [notificationCenter getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> * _Nonnull requests) {
-        self.arrayEvents = [[NSMutableArray alloc] initWithArray:requests];
-    }];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableViewWithNewEvent) name:@"NewEvent" object:nil];
-    [notificationCenter setDelegate:self];
+    [self setupView];
+    [self setupConstraints];
+    [self setupNotifications];
 }
 
 - (void) dealloc {
@@ -42,11 +42,16 @@
     NSString *identifier = @"Cell";
     
     UNNotificationRequest *notificationRequst = [self.arrayEvents objectAtIndex: indexPath.row];
+    
     NSDictionary *dict = notificationRequst.content.userInfo;
+    NSString *title = [dict objectForKey:@"textFieldString"];
+    NSString *body = [dict objectForKey:@"dateString"];
+    NSMutableString *info = [[NSMutableString alloc] initWithString:title];
+    [info appendString:@" - "];
+    [info appendString:body];
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-    cell.textLabel.text = [dict objectForKey:@"textFieldString"];
-    cell.detailTextLabel.text = [dict objectForKey:@"dateString"];
+    cell.textLabel.text = info;
     return cell;
 }
 
@@ -82,9 +87,10 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
         UNNotificationRequest *notificationRequest = [self.arrayEvents objectAtIndex:indexPath.row];
-        NSLog(@"%@", [notificationRequest identifier]);
+        
         [notificationCenter removeDeliveredNotificationsWithIdentifiers:@[[notificationRequest identifier]]];
         [self.arrayEvents removeObjectAtIndex:indexPath.row];
+        
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
@@ -101,11 +107,48 @@
     completionHandler();
 }
 
+// MARK: - User interactions
+
+- (void) tapAddTask {
+    DetailViewController *detailViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
+    [self.navigationController pushViewController:detailViewController animated:YES];
+}
+
 // MARK: - Private
+
+- (void) setupView {
+    self.addTaskButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(tapAddTask)];
+    [self.navigationItem setRightBarButtonItem:self.addTaskButton];
+    
+    self.tableView = [[UITableView alloc] init];
+    [self.tableView registerClass:UITableViewCell.class forCellReuseIdentifier:@"Cell"];
+    [self.tableView setDataSource:self];
+    [self.tableView setDelegate:self];
+    [self.tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:self.tableView];
+}
+
+- (void) setupConstraints {
+    [self.tableView.topAnchor constraintEqualToAnchor:self.view.topAnchor].active = YES;
+    [self.tableView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor].active = YES;
+    [self.tableView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor].active = YES;
+    [self.tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
+}
+
+- (void) setupNotifications {
+    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+    [notificationCenter getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> * _Nonnull requests) {
+        self.arrayEvents = [[NSMutableArray alloc] initWithArray:requests];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableViewWithNewEvent) name:@"NewEvent" object:nil];
+    
+    [notificationCenter setDelegate:self];
+}
 
 - (void) reloadTableViewWithNewEvent {
     [self.arrayEvents removeAllObjects];
-    
+
     [UIView animateWithDuration:0 animations:^{
         UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
         [notificationCenter getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> * _Nonnull requests) {

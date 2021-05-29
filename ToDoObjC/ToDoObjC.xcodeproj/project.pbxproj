@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F739C655265EB3E000709DB0 /* MainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F739C654265EB3E000709DB0 /* MainTableViewController.m */; };
+		F739C655265EB3E000709DB0 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F739C654265EB3E000709DB0 /* MainViewController.m */; };
 		F75B0DF8265E87C1003C64E2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F75B0DF7265E87C1003C64E2 /* AppDelegate.m */; };
 		F75B0DFB265E87C1003C64E2 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F75B0DFA265E87C1003C64E2 /* SceneDelegate.m */; };
 		F75B0DFE265E87C1003C64E2 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F75B0DFD265E87C1003C64E2 /* DetailViewController.m */; };
@@ -18,8 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F739C653265EB3E000709DB0 /* MainTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainTableViewController.h; sourceTree = "<group>"; };
-		F739C654265EB3E000709DB0 /* MainTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainTableViewController.m; sourceTree = "<group>"; };
+		F739C653265EB3E000709DB0 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		F739C654265EB3E000709DB0 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		F75B0DF3265E87C1003C64E2 /* ToDoObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoObjC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F75B0DF6265E87C1003C64E2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F75B0DF7265E87C1003C64E2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -77,8 +77,8 @@
 		F7032AA32660E693005F213D /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				F739C653265EB3E000709DB0 /* MainTableViewController.h */,
-				F739C654265EB3E000709DB0 /* MainTableViewController.m */,
+				F739C653265EB3E000709DB0 /* MainViewController.h */,
+				F739C654265EB3E000709DB0 /* MainViewController.m */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -185,7 +185,7 @@
 				F75B0DFE265E87C1003C64E2 /* DetailViewController.m in Sources */,
 				F75B0DF8265E87C1003C64E2 /* AppDelegate.m in Sources */,
 				F75B0E09265E87C2003C64E2 /* main.m in Sources */,
-				F739C655265EB3E000709DB0 /* MainTableViewController.m in Sources */,
+				F739C655265EB3E000709DB0 /* MainViewController.m in Sources */,
 				F75B0DFB265E87C1003C64E2 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MainTableViewController : UITableViewController
+@interface MainViewController : UIViewController
 
 @property (nonatomic, strong) NSMutableArray *arrayEvents;
 

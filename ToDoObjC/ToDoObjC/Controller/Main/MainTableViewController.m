@@ -25,6 +25,7 @@
         self.arrayEvents = [[NSMutableArray alloc] initWithArray:requests];
     }];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableViewWithNewEvent) name:@"NewEvent" object:nil];
+    [notificationCenter setDelegate:self];
 }
 
 - (void) dealloc {
@@ -86,6 +87,18 @@
         [self.arrayEvents removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
+}
+
+// MARK: - UNUserNotificationCenterDelegate
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    UNNotificationPresentationOptions presentationOptions = (UNNotificationPresentationOptionBadge + UNNotificationPresentationOptionSound + UNNotificationPresentationOptionBanner);
+    completionHandler(presentationOptions);
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
+    UIApplication.sharedApplication.applicationIconBadgeNumber = 0;
+    completionHandler();
 }
 
 // MARK: - Private

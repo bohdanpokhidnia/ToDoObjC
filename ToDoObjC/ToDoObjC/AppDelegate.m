@@ -20,8 +20,15 @@
     UNAuthorizationOptions notificationOptions = UNAuthorizationOptionAlert + UNAuthorizationOptionBadge + UNAuthorizationOptionSound;
     
     [notificationCenter requestAuthorizationWithOptions:notificationOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
-        if(!granted) {
-            NSLog(@"Oops, dont have permission");
+        if(granted) {
+            [notificationCenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+                if ([settings authorizationStatus] != UNAuthorizationStatusAuthorized) {
+                    NSLog(@"You dont have authorization %li", [settings authorizationStatus]);
+                    return;
+                }
+            }];
+        } else {
+            NSLog(@"You don`t have permission");
         }
     }];
 
@@ -44,6 +51,5 @@
     // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 }
-
 
 @end

@@ -12,9 +12,9 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 
 @interface DetailViewController ()<UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *textField;
-@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
-@property (weak, nonatomic) IBOutlet UIButton *saveButton;
+@property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong) UIDatePicker *datePicker;
+@property (nonatomic, strong) UIButton *saveButton;
 
 @end
 
@@ -24,8 +24,9 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    self.datePicker.minimumDate = [NSDate date];
+    
+    [self setupView];
+    [self setupConstraints];
     
     if (self.isDetail) {
         self.textField.text = self.eventInfo;
@@ -39,12 +40,56 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
         [self.navigationItem setTitle:@"Detail task"];
     } else {
         self.saveButton.userInteractionEnabled = NO;
-        [self.saveButton addTarget:self action:@selector(saveButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [self.saveButton addTarget:self action:@selector(tapSaveTask) forControlEvents:UIControlEventTouchUpInside];
         
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleEndEditing)];
         [self.view addGestureRecognizer:tapGesture];
+        
         [self.datePicker addTarget:self action:@selector(datePickerValueChanged) forControlEvents:UIControlEventValueChanged];
     }
+}
+
+// MARK: - Setup
+
+- (void) setupView {
+    self.textField = [[UITextField alloc] init];
+    [self.textField setPlaceholder:@"Input text"];
+    [self.textField setBorderStyle:UITextBorderStyleRoundedRect];
+    [self.textField setReturnKeyType:UIReturnKeyDone];
+    [self.textField setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:self.textField];
+    
+    self.datePicker = [[UIDatePicker alloc] init];
+    [self.datePicker setMinimumDate:[NSDate date]];
+    [self.datePicker setPreferredDatePickerStyle:UIDatePickerStyleWheels];
+    [self.datePicker setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:self.datePicker];
+    
+    self.saveButton = [[UIButton alloc] init];
+    [self.saveButton setTitle:@"Save" forState:UIControlStateNormal];
+    [self.saveButton setTitleColor:UIColor.systemBlueColor forState:UIControlStateNormal];
+    [self.saveButton setBackgroundColor:UIColor.systemGray6Color];
+    [self.saveButton.layer setCornerRadius:10];
+    [self.saveButton setClipsToBounds:YES];
+    [self.saveButton addTarget:self action:@selector(addNotification) forControlEvents:UIControlEventTouchUpInside];
+    [self.saveButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:self.saveButton];
+}
+
+- (void) setupConstraints {
+    [self.textField.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor constant:16].active = YES;
+    [self.textField.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:16].active = YES;
+    [self.textField.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-16].active = YES;
+    [self.textField.heightAnchor constraintEqualToConstant:30].active = YES;
+    
+    [self.datePicker.topAnchor constraintEqualToAnchor:self.textField.bottomAnchor constant:16].active = YES;
+    [self.datePicker.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:16].active = YES;
+    [self.datePicker.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-16].active = YES;
+    
+    [self.saveButton.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:16].active = YES;
+    [self.saveButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-16].active = YES;
+    [self.saveButton.bottomAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.bottomAnchor].active = YES;
+    [self.saveButton.heightAnchor constraintEqualToConstant:40].active = YES;
 }
 
 // MARK: - textFieldShouldReturn
@@ -65,7 +110,7 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 
 // MARK: - User interactions
 
-- (void) saveButtonAction {
+- (void) tapSaveTask {
     if (self.eventDate) {
         switch ([self.eventDate compare:[NSDate date]]) {
             case NSOrderedSame:
@@ -77,7 +122,7 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
                 break;
                 
             case NSOrderedDescending:
-                [self setNotification];
+                [self addNotification];
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
         }
@@ -101,7 +146,7 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 
 // MARK: - Private
 
-- (void) setNotification {
+- (void) addNotification {
     NSString *textFieldString = self.textField.text;
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

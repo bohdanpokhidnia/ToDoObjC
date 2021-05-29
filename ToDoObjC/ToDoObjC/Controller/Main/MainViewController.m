@@ -116,17 +116,6 @@
 
 // MARK: - Private
 
-- (void) setupNotifications {
-    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
-    [notificationCenter getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> * _Nonnull requests) {
-        self.arrayEvents = [[NSMutableArray alloc] initWithArray:requests];
-    }];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableViewWithNewEvent) name:@"NewEvent" object:nil];
-    
-    [notificationCenter setDelegate:self];
-}
-
 - (void) setupView {
     self.addTaskButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(tapAddTask)];
     [self.navigationItem setRightBarButtonItem:self.addTaskButton];
@@ -144,6 +133,17 @@
     [self.tableView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor].active = YES;
     [self.tableView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor].active = YES;
     [self.tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
+}
+
+- (void) setupNotifications {
+    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+    [notificationCenter getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> * _Nonnull requests) {
+        self.arrayEvents = [[NSMutableArray alloc] initWithArray:requests];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableViewWithNewEvent) name:@"NewEvent" object:nil];
+    
+    [notificationCenter setDelegate:self];
 }
 
 - (void) reloadTableViewWithNewEvent {

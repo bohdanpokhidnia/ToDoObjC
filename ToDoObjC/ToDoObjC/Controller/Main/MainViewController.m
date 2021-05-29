@@ -42,14 +42,15 @@
     NSString *identifier = @"Cell";
     
     UNNotificationRequest *notificationRequst = [self.arrayEvents objectAtIndex: indexPath.row];
+    
     NSDictionary *dict = notificationRequst.content.userInfo;
     NSString *title = [dict objectForKey:@"textFieldString"];
     NSString *body = [dict objectForKey:@"dateString"];
     NSMutableString *info = [[NSMutableString alloc] initWithString:title];
     [info appendString:@" - "];
     [info appendString:body];
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-//    cell.textLabel.text = [dict objectForKey:@"textFieldString"];
     cell.textLabel.text = info;
     return cell;
 }
@@ -86,9 +87,10 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
         UNNotificationRequest *notificationRequest = [self.arrayEvents objectAtIndex:indexPath.row];
-        NSLog(@"%@", [notificationRequest identifier]);
+        
         [notificationCenter removeDeliveredNotificationsWithIdentifiers:@[[notificationRequest identifier]]];
         [self.arrayEvents removeObjectAtIndex:indexPath.row];
+        
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
@@ -119,7 +121,9 @@
     [notificationCenter getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> * _Nonnull requests) {
         self.arrayEvents = [[NSMutableArray alloc] initWithArray:requests];
     }];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableViewWithNewEvent) name:@"NewEvent" object:nil];
+    
     [notificationCenter setDelegate:self];
 }
 

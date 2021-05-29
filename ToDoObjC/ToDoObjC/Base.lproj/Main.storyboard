@@ -41,51 +41,10 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Input text" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eyK-pj-17u">
-                                <rect key="frame" x="20" y="60" width="374" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                                <connections>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="zxq-Kc-iWL"/>
-                                </connections>
-                            </textField>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="R9M-6w-8tt">
-                                <rect key="frame" x="47" y="110" width="320" height="216"/>
-                            </datePicker>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gr2-2J-a5m">
-                                <rect key="frame" x="20" y="806" width="374" height="40"/>
-                                <color key="backgroundColor" systemColor="systemGray5Color"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="qfl-ml-EHy"/>
-                                </constraints>
-                                <state key="normal" title="Save"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="eyK-pj-17u" secondAttribute="trailing" constant="20" id="Kjs-kK-pf5"/>
-                            <constraint firstItem="gr2-2J-a5m" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="OdI-cl-40f"/>
-                            <constraint firstItem="eyK-pj-17u" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Xhz-fK-NPA"/>
-                            <constraint firstItem="eyK-pj-17u" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="cLl-DP-lvZ"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gr2-2J-a5m" secondAttribute="trailing" constant="20" id="eGD-Bw-yGx"/>
-                            <constraint firstItem="gr2-2J-a5m" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-16" id="non-zj-Lb4"/>
-                            <constraint firstItem="R9M-6w-8tt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rzI-Kl-L4D"/>
-                            <constraint firstItem="R9M-6w-8tt" firstAttribute="top" secondItem="eyK-pj-17u" secondAttribute="bottom" constant="16" id="vC5-bx-jwJ"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Add task" id="oT9-LC-LHD"/>
-                    <connections>
-                        <outlet property="datePicker" destination="R9M-6w-8tt" id="QKg-ni-6ff"/>
-                        <outlet property="saveButton" destination="gr2-2J-a5m" id="2kS-Le-LxR"/>
-                        <outlet property="textField" destination="eyK-pj-17u" id="J0R-gY-yfu"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -95,9 +54,6 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -26,7 +26,7 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setupView];
+    [self setupViews];
     [self setupConstraints];
     
     if (self.isDetail) {
@@ -52,7 +52,7 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 
 // MARK: - Setup
 
-- (void) setupView {
+- (void) setupViews {
     self.textField = [[UITextField alloc] init];
     [self.textField setPlaceholder:@"Input text"];
     [self.textField setBorderStyle:UITextBorderStyleRoundedRect];

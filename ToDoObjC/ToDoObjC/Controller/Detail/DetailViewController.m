@@ -15,6 +15,7 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UIDatePicker *datePicker;
 @property (nonatomic, strong) UIButton *saveButton;
+@property (nonatomic, strong) UIStackView *contentStack;
 
 @end
 
@@ -57,13 +58,13 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
     [self.textField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.textField setReturnKeyType:UIReturnKeyDone];
     [self.textField setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.view addSubview:self.textField];
     
     self.datePicker = [[UIDatePicker alloc] init];
     [self.datePicker setMinimumDate:[NSDate date]];
     [self.datePicker setPreferredDatePickerStyle:UIDatePickerStyleWheels];
     [self.datePicker setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.view addSubview:self.datePicker];
+    
+    UIView *emptyView = [[UIView alloc] init];
     
     self.saveButton = [[UIButton alloc] init];
     [self.saveButton setTitle:@"Save" forState:UIControlStateNormal];
@@ -73,23 +74,27 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
     [self.saveButton setClipsToBounds:YES];
     [self.saveButton addTarget:self action:@selector(addNotification) forControlEvents:UIControlEventTouchUpInside];
     [self.saveButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.view addSubview:self.saveButton];
+    
+    self.contentStack = [[UIStackView alloc] init];
+    [self.contentStack setAxis:UILayoutConstraintAxisVertical];
+    [self.contentStack setDistribution:UIStackViewDistributionFill];
+    [self.contentStack setAlignment:UIStackViewAlignmentFill];
+    [self.contentStack setSpacing:16];
+    [self.contentStack addArrangedSubview:self.textField];
+    [self.contentStack addArrangedSubview:self.datePicker];
+    [self.contentStack addArrangedSubview:emptyView];
+    [self.contentStack addArrangedSubview:self.saveButton];
+    [self.contentStack setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:self.contentStack];
 }
 
 - (void) setupConstraints {
-    [self.textField.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor constant:16].active = YES;
-    [self.textField.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:16].active = YES;
-    [self.textField.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-16].active = YES;
-    [self.textField.heightAnchor constraintEqualToConstant:30].active = YES;
-    
-    [self.datePicker.topAnchor constraintEqualToAnchor:self.textField.bottomAnchor constant:16].active = YES;
-    [self.datePicker.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:16].active = YES;
-    [self.datePicker.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-16].active = YES;
-    
-    [self.saveButton.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:16].active = YES;
-    [self.saveButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-16].active = YES;
-    [self.saveButton.bottomAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.bottomAnchor].active = YES;
     [self.saveButton.heightAnchor constraintEqualToConstant:40].active = YES;
+    
+    [self.contentStack.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor constant:16].active = YES;
+    [self.contentStack.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:16].active = YES;
+    [self.contentStack.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-16].active = YES;
+    [self.contentStack.bottomAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.bottomAnchor].active = YES;
 }
 
 // MARK: - textFieldShouldReturn

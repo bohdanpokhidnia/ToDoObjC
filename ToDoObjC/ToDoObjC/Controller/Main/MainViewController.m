@@ -23,6 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self setupNavigationBar];
     [self setupView];
     [self setupConstraints];
     [self setupNotifications];
@@ -110,11 +111,15 @@
 // MARK: - User interactions
 
 - (void) tapAddTask {
-    DetailViewController *detailViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
+    DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:nil bundle:nil];
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
-// MARK: - Private
+// MARK: - Setup
+
+- (void) setupNavigationBar {
+    [self.navigationItem setTitle:@"ToDoObjC"];
+}
 
 - (void) setupView {
     self.addTaskButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(tapAddTask)];
@@ -145,6 +150,8 @@
     
     [notificationCenter setDelegate:self];
 }
+
+// MARK: - Private
 
 - (void) reloadTableViewWithNewEvent {
     [self.arrayEvents removeAllObjects];

@@ -30,6 +30,8 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
     [self setupConstraints];
     
     if (self.isDetail) {
+        [self.navigationItem setTitle:@"Detail task"];
+        
         self.textField.text = self.eventInfo;
         self.textField.userInteractionEnabled = NO;
         
@@ -37,9 +39,9 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
         self.datePicker.userInteractionEnabled = NO;
         
         self.saveButton.hidden = YES;
-        
-        [self.navigationItem setTitle:@"Detail task"];
     } else {
+        [self.navigationItem setTitle:@"Add task"];
+        
         self.saveButton.userInteractionEnabled = NO;
         [self.saveButton addTarget:self action:@selector(tapSaveTask) forControlEvents:UIControlEventTouchUpInside];
         
@@ -53,6 +55,8 @@ UIKIT_EXTERN NSString *const UILocalNotificationDefaultSoundName;
 // MARK: - Setup
 
 - (void) setupViews {
+    [self.view setBackgroundColor:UIColor.systemBackgroundColor];
+    
     self.textField = [[UITextField alloc] init];
     [self.textField setPlaceholder:@"Input text"];
     [self.textField setBorderStyle:UITextBorderStyleRoundedRect];

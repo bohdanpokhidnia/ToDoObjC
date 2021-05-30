@@ -30,7 +30,7 @@
 
 
 - (void)sceneDidBecomeActive:(UIScene *)scene {
-    UIApplication.sharedApplication.applicationIconBadgeNumber = 0;
+    
 }
 
 

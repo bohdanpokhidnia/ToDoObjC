@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F733E93A29AA2F4300E2B2E5 /* CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F733E93829AA2F4300E2B2E5 /* CurrencyViewController.m */; };
 		F739C655265EB3E000709DB0 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F739C654265EB3E000709DB0 /* MainViewController.m */; };
 		F75B0DF8265E87C1003C64E2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F75B0DF7265E87C1003C64E2 /* AppDelegate.m */; };
 		F75B0DFB265E87C1003C64E2 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F75B0DFA265E87C1003C64E2 /* SceneDelegate.m */; };
@@ -17,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F733E93729AA2F4300E2B2E5 /* CurrencyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CurrencyViewController.h; sourceTree = "<group>"; };
+		F733E93829AA2F4300E2B2E5 /* CurrencyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CurrencyViewController.m; sourceTree = "<group>"; };
 		F739C653265EB3E000709DB0 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		F739C654265EB3E000709DB0 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		F75B0DF3265E87C1003C64E2 /* ToDoObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoObjC.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,6 +51,7 @@
 			children = (
 				F7032AA32660E693005F213D /* Main */,
 				F7032AA22660E68A005F213D /* Detail */,
+				F733E93229AA2EFB00E2B2E5 /* Currency */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -79,6 +83,15 @@
 				F739C654265EB3E000709DB0 /* MainViewController.m */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		F733E93229AA2EFB00E2B2E5 /* Currency */ = {
+			isa = PBXGroup;
+			children = (
+				F733E93729AA2F4300E2B2E5 /* CurrencyViewController.h */,
+				F733E93829AA2F4300E2B2E5 /* CurrencyViewController.m */,
+			);
+			path = Currency;
 			sourceTree = "<group>";
 		};
 		F75B0DEA265E87C1003C64E2 = {
@@ -140,6 +153,7 @@
 				TargetAttributes = {
 					F75B0DF2265E87C1003C64E2 = {
 						CreatedOnToolsVersion = 12.5;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -179,6 +193,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F75B0DFE265E87C1003C64E2 /* DetailViewController.m in Sources */,
+				F733E93A29AA2F4300E2B2E5 /* CurrencyViewController.m in Sources */,
 				F75B0DF8265E87C1003C64E2 /* AppDelegate.m in Sources */,
 				F75B0E09265E87C2003C64E2 /* main.m in Sources */,
 				F739C655265EB3E000709DB0 /* MainViewController.m in Sources */,
@@ -317,6 +332,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3S8AVD2TKW;
 				INFOPLIST_FILE = ToDoObjC/Info.plist;
@@ -326,6 +342,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = bopo.ToDoObjC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -335,6 +353,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3S8AVD2TKW;
 				INFOPLIST_FILE = ToDoObjC/Info.plist;
@@ -344,6 +363,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = bopo.ToDoObjC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

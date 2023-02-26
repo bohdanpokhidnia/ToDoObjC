@@ -8,11 +8,13 @@
 #import <UserNotifications/UserNotifications.h>
 #import "MainViewController.h"
 #import "DetailViewController.h"
+#import "CurrencyViewController.h"
 
 @interface MainViewController ()<UITableViewDataSource, UITableViewDelegate, UNUserNotificationCenterDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIBarButtonItem *addTaskButton;
+@property (nonatomic, strong) UIBarButtonItem *showCurrencies;
 
 @end
 
@@ -115,16 +117,24 @@
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
+- (void) tapShowCurrencies {
+    CurrencyViewController *currencyViewController = [[CurrencyViewController alloc] initWithNibName:nil bundle:nil];
+    [self.navigationController pushViewController:currencyViewController animated:true];
+}
+
 // MARK: - Setup
 
 - (void) setupNavigationBar {
     [self.navigationItem setTitle:@"ToDoObjC"];
-}
-
-- (void) setupView {
+    
     self.addTaskButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(tapAddTask)];
     [self.navigationItem setRightBarButtonItem:self.addTaskButton];
     
+    self.showCurrencies = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(tapShowCurrencies)];
+    [self.navigationItem setLeftBarButtonItem:self.showCurrencies];
+}
+
+- (void) setupView {
     self.tableView = [[UITableView alloc] init];
     [self.tableView registerClass:UITableViewCell.class forCellReuseIdentifier:@"Cell"];
     [self.tableView setDataSource:self];
